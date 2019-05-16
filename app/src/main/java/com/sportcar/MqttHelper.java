@@ -9,8 +9,11 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.nio.ByteBuffer;
+
 public class MqttHelper {
     private static String mqttHost = "tcp://192.168.1.101";//改為自己的MQTT SERVER IP
+//    private static String mqttHost = "tcp://192.168.43.34";//改為自己的MQTT SERVER IP
 
     static MqttClient client;
     private static MqttConnectOptions options;
@@ -107,7 +110,13 @@ public class MqttHelper {
     //發佈
     public static void startPub(String topic, String m){
         try {
+            // String
             MqttMessage message = new MqttMessage(m.getBytes());message.setQos(0);
+
+            // Integer
+//            byte[] bytes = ByteBuffer.allocate(4).putInt(m).array();
+//            MqttMessage message = new MqttMessage(bytes);message.setQos(0);
+
             client.publish(topic, message);
         } catch (MqttException e) {
             e.printStackTrace();

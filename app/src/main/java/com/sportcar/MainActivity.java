@@ -35,19 +35,19 @@ public class MainActivity extends AppCompatActivity {
 
         // PWM
         mqtt.startSub(topicPWM);
-        mqtt.startPub(topicPWM,"Android init");
+        mqtt.startPub(topicPWM,"0");
 
         // temperature
         mqtt.startSub(topicTemp);
 
         button_on.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-            mqtt.startPub(topicPWM, "Android on");
+            mqtt.startPub(topicPWM, "1");
             }
         });
         button_off.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-            mqtt.startPub(topicPWM, "Android off");
+            mqtt.startPub(topicPWM, "0");
             }
         });
     }
