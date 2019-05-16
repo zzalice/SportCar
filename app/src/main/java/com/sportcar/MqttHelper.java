@@ -10,7 +10,6 @@ import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class MqttHelper {
-    private static String myTopic = "control/pwm";
     private static String mqttHost = "tcp://192.168.1.101";//改為自己的MQTT SERVER IP
 
     static MqttClient client;
@@ -53,8 +52,7 @@ public class MqttHelper {
     }
 
 
-    public MqttHelper(String h, String t){
-        myTopic = t;
+    public MqttHelper(String h){
         mqttHost = "tcp://" + h;
         try {
             client = new MqttClient(mqttHost, "linkU", new MemoryPersistence());
@@ -97,21 +95,20 @@ public class MqttHelper {
         }
     }
     //訂閱
-    public static void startSub(){
+    public static void startSub(String topic){
         try {
             int[] Qos = {1};
-            String[] topic1 = {myTopic};
+            String[] topic1 = {topic};
             client.subscribe(topic1, Qos);
         } catch (MqttException e) {
             e.printStackTrace();
         }
     }
     //發佈
-    public static void startPub(String m){
+    public static void startPub(String topic, String m){
         try {
-            MqttTopic topic = client.getTopic(myTopic);
             MqttMessage message = new MqttMessage(m.getBytes());message.setQos(0);
-            client.publish(myTopic, message);
+            client.publish(topic, message);
         } catch (MqttException e) {
             e.printStackTrace();
         }

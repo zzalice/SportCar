@@ -10,9 +10,15 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
+    private static String topicPWM = "control/pwm";
+    private static String topicTemp = "car/temp";
+
     MqttHelper mqtt;
     TextView t_hi;
+    TextView t_pi_temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,24 +26,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         t_hi = findViewById(R.id.hi);
-        final TextView t_pi_temp = findViewById(R.id.pi_temp);
+        t_pi_temp = findViewById(R.id.pi_temp);
         final Button button_on = findViewById(R.id.button_on);
         final Button button_off = findViewById(R.id.button_off);
 
         mqtt = new MqttHelper();
         mqttCallback();
 
-        mqtt.startSub();//訂閱
-        mqtt.startPub("Android init");//發佈
+        // PWM
+        mqtt.startSub(topicPWM);
+        mqtt.startPub(topicPWM,"Android init");
+
+        // temperature
+        mqtt.startSub(topicTemp);
 
         button_on.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-            mqtt.startPub("Android on");
+            mqtt.startPub(topicPWM, "Android on");
             }
         });
         button_off.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-            mqtt.startPub("Android off");
+            mqtt.startPub(topicPWM, "Android off");
             }
         });
     }
@@ -56,16 +66,23 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void messageArrived(String topic, MqttMessage message) throws Exception {
+            public void messageArrived(final String topic, MqttMessage message) throws Exception {
                 // subscribe后得到的訊息如下
                 System.out.println("主题 : " + topic);
                 System.out.println("Qos : " + message.getQos());
                 System.out.println("内容 : " + new String(message.getPayload()));
+
                 final String msg = new String(message.getPayload());
+
 
                 runOnUiThread(new Runnable(){
                     public void run() {
-                        t_hi.setText(msg);
+                        // TODO: use switch
+                        if(Objects.equals(topic, topicPWM)){
+                            t_hi.setText(msg);
+                        } else if (Objects.equals(topic, topicTemp)){
+                            t_pi_temp.setText(msg);
+                        }
                     }
                 });
 
