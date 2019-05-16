@@ -10,15 +10,12 @@ import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class MqttHelper {
+    private static String myTopic = "control/pwm";
+    private static String mqttHost = "tcp://192.168.1.101";//改為自己的MQTT SERVER IP
 
-    public static MqttClient client;
+    static MqttClient client;
+    private static MqttConnectOptions options;
 
-
-    public static String myTopic = "control/pwm";
-
-    public static MqttConnectOptions options;
-
-    public static String mqttHost = "tcp://192.168.1.101";//改為自己的MQTT SERVER IP
 
     public  MqttHelper(){
         try {
@@ -29,37 +26,30 @@ public class MqttHelper {
 //            options.setPassword("xxxxxxx".toCharArray());//如果有密碼，可以這裡設定
             options.setConnectionTimeout(10);
             options.setKeepAliveInterval(20);
-            client.setCallback(new MqttCallback() {
-                @Override
-                public void connectionLost(Throwable cause) {
-                    // 這裡可以寫重連程式
-                    System.out.println("這裡寫重連");
-                }
-
-                @Override
-                public void deliveryComplete(IMqttDeliveryToken token) {
-                    System.out.println("發送完成 --" + token.isComplete());
-                }
-
-                @Override
-                public void messageArrived(String topic, MqttMessage message) throws Exception {
-                    // subscribe后得到的訊息如下
-                    System.out.println("主题 : " + topic);
-                    System.out.println("Qos : " + message.getQos());
-                    System.out.println("内容 : " + new String(message.getPayload()));
-                    
-                }
-            });
-
+//            client.setCallback(new MqttCallback() {
+//                @Override
+//                public void connectionLost(Throwable cause) {
+//                    // 這裡可以寫重連程式
+//                    System.out.println("這裡寫重連");
+//                }
+//
+//                @Override
+//                public void deliveryComplete(IMqttDeliveryToken token) {
+//                    System.out.println("發送完成 --" + token.isComplete());
+//                }
+//
+//                @Override
+//                public void messageArrived(String topic, MqttMessage message) throws Exception {
+//                    // subscribe后得到的訊息如下
+//                    System.out.println("主题 : " + topic);
+//                    System.out.println("Qos : " + message.getQos());
+//                    System.out.println("内容 : " + new String(message.getPayload()));
+//                }
+//            });
             client.connect(options);
-
-
         }catch(MqttException me) {
-
             me.printStackTrace();
         }
-
-
     }
 
 
@@ -76,26 +66,26 @@ public class MqttHelper {
 
             options.setConnectionTimeout(10);
             options.setKeepAliveInterval(20);
-            client.setCallback(new MqttCallback() {
-                @Override
-                public void connectionLost(Throwable cause) {
-
-                    System.out.println("這裡寫重連");
-                }
-
-                @Override
-                public void deliveryComplete(IMqttDeliveryToken token) {
-                    System.out.println("發送完成 --" + token.isComplete());
-                }
-
-                @Override
-                public void messageArrived(String topic, MqttMessage message) throws Exception {
-
-                    System.out.println("主题 : " + topic);
-                    System.out.println("Qos : " + message.getQos());
-                    System.out.println("内容 : " + new String(message.getPayload()));
-                }
-            });
+//            client.setCallback(new MqttCallback() {
+//                @Override
+//                public void connectionLost(Throwable cause) {
+//
+//                    System.out.println("這裡寫重連");
+//                }
+//
+//                @Override
+//                public void deliveryComplete(IMqttDeliveryToken token) {
+//                    System.out.println("發送完成 --" + token.isComplete());
+//                }
+//
+//                @Override
+//                public void messageArrived(String topic, MqttMessage message) throws Exception {
+//
+//                    System.out.println("主题 : " + topic);
+//                    System.out.println("Qos : " + message.getQos());
+//                    System.out.println("内容 : " + new String(message.getPayload()));
+//                }
+//            });
             client.connect(options);//連線囉！
         }catch(MqttException me) {
             System.out.println("reason "+me.getReasonCode());
@@ -108,28 +98,19 @@ public class MqttHelper {
     }
     //訂閱
     public static void startSub(){
-
-
         try {
-
             int[] Qos = {1};
             String[] topic1 = {myTopic};
             client.subscribe(topic1, Qos);
         } catch (MqttException e) {
             e.printStackTrace();
         }
-
-
     }
     //發佈
     public static void startPub(String m){
-
         try {
-
             MqttTopic topic = client.getTopic(myTopic);
-
             MqttMessage message = new MqttMessage(m.getBytes());message.setQos(0);
-
             client.publish(myTopic, message);
         } catch (MqttException e) {
             e.printStackTrace();
