@@ -8,51 +8,46 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="47dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/hi"
+            android:id="@+id/text_mqtt_broker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LED off"
+            android:text="MQTT Broker IP:"
             android:textSize="24sp" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="72dp"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/button_on"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="0dp"
-            android:text="On" />
-
-        <Button
-            android:id="@+id/button_off"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="Off" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/pi_temp"
+        <EditText
+            android:id="@+id/eText_mqtt_broker_ip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="pi temperature"
-            android:textSize="24sp" />
+            android:ems="10"
+            android:inputType="number"
+            android:digits="0123456789."
+            android:text="192.168.1.101" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="489dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_connect_mqtt_broker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="0dp"
+            android:text="Connect" />
+
     </LinearLayout>
 
 
