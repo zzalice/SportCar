@@ -83,7 +83,8 @@ public class SportcarActivity extends AppCompatActivity {
         public void onStopTrackingTouch(SeekBar seekBar)
         {
             //停止拖曳時觸發事件
-            seekBar.setProgress(16);
+            seekBar.setProgress(15);
+            mqtt.startPub(topicBackWheel, ""+speed[15]);
         }
 
         @Override
@@ -108,6 +109,7 @@ public class SportcarActivity extends AppCompatActivity {
         {
             //停止拖曳時觸發事件
             seekBar.setProgress(straight);
+            mqtt.startPub(topicFrontWheel, ""+direction[straight]);
         }
 
         @Override
