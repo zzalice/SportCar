@@ -7,7 +7,10 @@
 我們選擇做第一人稱視角賽車是希望能夠結合競賽型賽車和遙控賽車的優點，既擁有競賽型賽車的刺激感與臨場感，又能有遙控車的安全性，此外我們還結合了各式感測器，使得我們的第一人稱視角賽車能配有當今進階車種才有的監控和保護功能。
 
 ## 二、架構
+[![DEMO](https://i9.ytimg.com/vi/D7PEC6-I-ks/mq2.jpg?sqp=CJyci44G&rs=AOn4CLABgZwjSrmELlP_tmkFJvMep7_UQw)](https://www.youtube.com/watch?v=D7PEC6-I-ks&ab_channel=%E9%99%B3%E5%A7%BF%E4%BD%91)
+
 系統分成遙控端和汽車端。汽車端主要由Raspberry Pi控制，裝有多個感測器，包含超音波、電壓和溫度，另外還有攝影機。遙控端有兩個選擇，一個是透過手機APP遙控，另一個是透過賽車方向盤。兩端之間藉由WiFi通訊。
+![系統架構圖](https://github.com/zzalice/SportCar/blob/master/%E7%B3%BB%E7%B5%B1%E6%9E%B6%E6%A7%8B%E5%9C%96.png?raw=true)
 
 汽車端的感測器功能包含：
 * 超音波裝在車頭，當遇到障礙物會緊急煞車。
@@ -17,10 +20,12 @@
 
 而汽車端的控制板有兩個：Raspberry Pi和Arduino。Raspberry Pi會接收控制訊號，依據訊號內容分別送給前輪或Arduino，前輪會控制轉向，而Arduino接收到的訊號是前進、後退的訊號，能夠控制車輪的轉速，此外Arduino還會控制超音波，當超音波偵測到障礙物時，會立即煞車，且限制車子只能後退不能前進，直到不再偵測到障礙物。另外Raspberry Pi會回覆控制端的請求，包含影像串流、電池電壓和CPU溫度。
 在汽車端，我們用了兩顆電池供電，一顆供給後輪，另一顆則供給其餘的控制板和感測器，這顆電池還接了一個降壓器，將7.4V轉5V供給Raspberry Pi。
+![汽車端架構圖](https://github.com/zzalice/SportCar/blob/master/%E6%B1%BD%E8%BB%8A%E7%AB%AF%E6%9E%B6%E6%A7%8B%E5%9C%96.png)
 
 賽車方向盤連接了另一個Raspberry Pi，這個Raspberry Pi會接收方向盤和腳踏板傳來的訊號，並將訊號透過WiFi送給控制端，另外在方向盤上還有兩個按鈕可以微調轉向的中間值，例如：當使用者想向前走時，卻發現車子一直向左偏，那麼就能按按鈕「R」，讓輪胎向右偏，來導正方向。
 
 APP控制端有全螢幕的串流影像、兩個滑動條(seekbar)控制前進、後退和方向，還有兩個按鈕能矯正轉向。
+![APP畫面](https://github.com/zzalice/SportCar/blob/master/%E6%89%8B%E6%A9%9F.png)
 
 ## 三、實作
 ### (一) 無線通訊
